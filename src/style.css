@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilites;
+@screens;
+
+html {
+  @apply h-full;
+}
+
+body {
+  @apply overflow-y-auto min-h-full text-lg relative pb-8 m-4;
+}
+
+.wrapper {
+  @apply mx-auto max-w-3xl;
+}
+
+.title {
+  @apply mt-8 text-4xl;
+}
+
+p, li {
+  @apply leading-snug;
+}
+
+.c2, .c5, .c6 {
+  @apply text-red;
+}
+
+.c1, .c10 {
+  @apply ml-8;
+}
+
+.c16 {
+  @apply ml-16;
+}
+
+.c3, .c8 {
+  @apply h-4;
+}
+
+ul, ol {
+  @apply m-0;
+}
+
+ul {
+  @apply list-disc;
+}
+
+ol {
+  @apply list-decimal;
+}
