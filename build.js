@@ -7,11 +7,11 @@ const hashFiles = require('hash-files');
 const minify = require('html-minifier').minify;
 const cheerio = require('cheerio');
 
-async function css() {
+async function compileTailwind() {
   const plugins = tailwindConfig('./tailwind.config.js').plugins;
   plugins.push(...postcssConfig.plugins);
   const result = await compileCss({
-    inputFile: './src/style.css',
+    inputFile: './data/style.css',
     plugins,
   });
   return result.css;
@@ -21,14 +21,32 @@ async function getData() {
   let content = fs.readFileSync('./data/content.html', 'utf8');
   const $ = cheerio.load(content);
   $('hr').remove();
-  $('.title').each((i, $title) => {
+  $('.title').each((_, $title) => {
     $($title).attr('id', $($title).text());
   });
+  const style = [];
+  const css = $('style').html().replace(/\n/g, '');
+  for (const m of css.matchAll(/(.c[0-9]{1,2}) \{[^{]+margin-left: (\d+)/g)) {
+    const margin = +m[2];
+    if (margin >= 72) {
+      style.push(`${m[1]} { @apply ml-16; }`);
+    } else if (margin >= 36) {
+      style.push(`${m[1]} { @apply ml-8; }`);
+    }
+  }
+  for (const m of css.matchAll(/(.c[0-9]{1,2}) \{[^{]+[^-]color: #660000/g)) {
+    style.push(`${m[1]} { @apply text-red; }`);
+  }
+  for (const m of css.matchAll(/(.c[0-9]{1,2}) \{[^{]+[^-]height: (\d+)/g)) {
+    style.push(`${m[1]} { @apply h-4; }`);
+  }
+  const cssContent = fs.readFileSync('./src/style.css', 'utf8') + style.join('\n');
+  fs.writeFileSync('./data/style.css', cssContent);
   content = $('body').html();
   fs.writeFileSync('./src/content.html', content);
   const data = {
     content,
-    style: await css(),
+    style: await compileTailwind(),
   };
   return data;
 }

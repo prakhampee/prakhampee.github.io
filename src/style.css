@@ -34,20 +34,3 @@ ul {
 ol {
   @apply list-decimal;
 }
-
-.c7, .c5, .c2 {
-  @apply text-red;
-}
-
-.c9, .c0 {
-  @apply ml-8;
-}
-
-.c16 {
-  @apply ml-16;
-}
-
-.c3, .c8 {
-  @apply h-4;
-}
-
