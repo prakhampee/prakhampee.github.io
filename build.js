@@ -20,6 +20,10 @@ async function css() {
 async function getData() {
   let content = fs.readFileSync('./data/content.html', 'utf8');
   const $ = cheerio.load(content);
+  $('hr').remove();
+  $('.title').each((i, $title) => {
+    $($title).attr('id', $($title).text());
+  });
   content = $('body').html();
   fs.writeFileSync('./src/content.html', content);
   const data = {

@@ -35,19 +35,19 @@ ol {
   @apply list-decimal;
 }
 
-.c1, .c4 {
+.c7, .c5, .c2 {
   @apply text-red;
 }
 
-.c10, .c3 {
+.c9, .c0 {
   @apply ml-8;
 }
 
-.c11 {
+.c16 {
   @apply ml-16;
 }
 
-.c0, .c8 {
+.c3, .c8 {
   @apply h-4;
 }
 
