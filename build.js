@@ -100,8 +100,11 @@ async function getData() {
       $span.contents().unwrap();
     }
   });
+  const $ul = $('<ul>').addClass('nav');
   $('.title').each((_, $title) => {
-    $($title).attr('id', $($title).text());
+    const id = $($title).text();
+    $($title).attr('id', id);
+    $ul.append($('<li>').append($('<a>').attr('href', `#${id}`).text(id)));
   });
   $('body').find('*').contents().filter(function() { return this.nodeType === 3; }).each(function() {
     const words = wordcut.cutIntoArray(this.data);
@@ -156,6 +159,7 @@ async function getData() {
       }
     }
   });
+  $('body').prepend($ul);
   const style = [];
   const css = $('style').html().replace(/\n/g, '');
   for (const m of css.matchAll(/(.c[0-9]{1,2}) \{[^{]+margin-left: (\d+)/g)) {
