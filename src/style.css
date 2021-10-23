@@ -19,6 +19,14 @@ body {
   @apply mt-8 text-4xl;
 }
 
+.title a {
+  @apply no-underline;
+}
+
+.w {
+  white-space: nowrap;
+}
+
 p, li {
   @apply leading-snug;
 }
@@ -33,4 +41,8 @@ ul {
 
 ol {
   @apply list-decimal;
+}
+
+a {
+  @apply underline;
 }
