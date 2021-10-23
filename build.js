@@ -179,7 +179,6 @@ async function getData() {
   const cssContent = fs.readFileSync('./src/style.css', 'utf8') + style.join('\n');
   fs.writeFileSync('./data/style.css', cssContent);
   content = $('body').html();
-  fs.writeFileSync('./src/content.html', content);
   const javascript = fs.readFileSync('./data/build.js', 'utf8');
   const data = {
     content,
