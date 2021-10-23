@@ -56,5 +56,5 @@ a {
 }
 
 .active {
-  @apply bold;
+  @apply font-bold;
 }
