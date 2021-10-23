@@ -140,7 +140,10 @@ async function getData() {
           i += n_skip - 1;
         }
       }
-      let span = $('<span>').addClass('w').text(word);
+      let span = $('<span>').text(word);
+      if (word.trim()) {
+        span.addClass('w');
+      }
       if (url !== null) {
         span = $('<a>').addClass('w').attr('href', url).attr('target', '_blank').text(word);
       }
