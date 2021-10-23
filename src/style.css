@@ -8,7 +8,11 @@ html {
 }
 
 body {
-  @apply overflow-y-auto min-h-full text-lg relative pb-8 m-4 text-gray-900;
+  @apply lg:overflow-y-auto min-h-full text-lg relative text-gray-900;
+}
+
+.background {
+  @apply m-4 pb-8;
 }
 
 .wrapper {
@@ -16,7 +20,7 @@ body {
 }
 
 .title {
-  @apply mt-8 text-4xl;
+  @apply pt-8 text-4xl;
 }
 
 .title a {

@@ -180,8 +180,10 @@ async function getData() {
   fs.writeFileSync('./data/style.css', cssContent);
   content = $('body').html();
   fs.writeFileSync('./src/content.html', content);
+  const javascript = fs.readFileSync('./data/build.js', 'utf8');
   const data = {
     content,
+    javascript,
     style: await compileTailwind(),
   };
   return data;
@@ -207,6 +209,12 @@ function compile(source, destination, data) {
 }
 
 async function main() {
+  require('esbuild').build({
+    entryPoints: ['./src/index.js'],
+    bundle: true,
+    minify: true,
+    outfile: './data/build.js',
+  }).catch(() => process.exit(1));
   const data = await getData();
   compile('./src/index.html', './public/index.html', data);
   let files = fs.readdirSync('./public');
