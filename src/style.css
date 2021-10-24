@@ -185,7 +185,7 @@ a {
   right: 0;
   bottom: 0;
   pointer-events: none;
-  /* overflow: hidden; */
+  overflow: hidden;
 }
 
 [data-simplebar].simplebar-dragging .simplebar-content {
@@ -213,7 +213,7 @@ a {
   border-radius: 50%;
   width: 50px;
   height: 50px;
-  left: -18px;
+  left: 2px;
   transform: translateX(100%);
   transition: transform 0.15s linear;
 }
@@ -224,7 +224,7 @@ a {
 
 .simplebar-track.simplebar-vertical {
   top: 0;
-  width: 11px;
+  width: 30px;
 }
 
 .simplebar-track.simplebar-vertical .simplebar-scrollbar:before {
