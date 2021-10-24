@@ -1,22 +1,22 @@
-const SimpleBar = require('simplebar');
+// const SimpleBar = require('simplebar');
 
-let isInit = false;
-function tryInitScroll() {
-  console.log(window.innerWidth);
-  if (window.innerWidth < 1024 && !isInit) {
-    isInit = true;
-    console.log('init');
-    new SimpleBar(document.body, {
-      // autoHide: false,
-      // forceVisible: 'y',
-    });
-  }
-}
+// let isInit = false;
+// function tryInitScroll() {
+//   console.log(window.innerWidth);
+//   if (window.innerWidth < 1024 && !isInit) {
+//     isInit = true;
+//     console.log('init');
+//     new SimpleBar(document.body, {
+//       // autoHide: false,
+//       // forceVisible: 'y',
+//     });
+//   }
+// }
 
-document.addEventListener('resize', _ => {
-  tryInitScroll();
-});
-tryInitScroll();
+// document.addEventListener('resize', _ => {
+//   tryInitScroll();
+// });
+// tryInitScroll();
 
 
 const $titles = document.getElementsByClassName('title');
