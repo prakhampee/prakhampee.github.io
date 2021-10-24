@@ -3,7 +3,7 @@ module.exports = {
     enabled: true,
     mode: 'all',
     preserveHtmlElements: false,
-    content: ['./src/*.html', './src/*.js'],
+    content: ['./src/*.html', './data/build.js'],
   },
   darkMode: false,
   theme: {
