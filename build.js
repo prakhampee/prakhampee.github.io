@@ -100,6 +100,7 @@ async function processBook(book, path, lastChapter) {
   const zip = new AdmZip(`./book/${book}.zip`);
   let content = zip.readAsText('index.html');
   const $ = cheerio.load(content);
+  $('.title:first').prevAll().remove();
   const $unwantedTitle = $(`.title:contains(${lastChapter + 1})`);
   $unwantedTitle.nextAll().remove();
   $unwantedTitle.remove();
@@ -110,8 +111,9 @@ async function processBook(book, path, lastChapter) {
       $span.contents().unwrap();
     }
   });
+  const $mobileNav = $('<div>').addClass('m-nav');
   const $ul = $('<ul>').addClass('nav');
-  const $books = $('<select>').attr('id', 'navigation');
+  const $books = $('<select>').addClass('navigation');
   for (const [name, path, _] of BOOKS) {
     const $option = $('<option>').val(path).text(name);
     if (name === book) {
@@ -119,6 +121,7 @@ async function processBook(book, path, lastChapter) {
     }
     $books.append($option);
   }
+  $mobileNav.append($books.clone());
   $ul.append($('<li>').html($books));
   $('.title').each((_, $title) => {
     const title = $($title).text();
@@ -179,7 +182,7 @@ async function processBook(book, path, lastChapter) {
       }
     }
   });
-  $('body').prepend($ul);
+  $('body').prepend($ul).prepend($mobileNav);
   const style = [];
   const css = $('style').html().replace(/\n/g, '');
   for (const m of css.matchAll(/(.c[0-9]{1,2})\{[^{}]*vertical-align:super/g)) {

@@ -8,11 +8,11 @@ html {
 }
 
 body {
-  @apply overflow-x-hidden lg:overflow-y-auto min-h-full lg:h-auto h-full text-lg relative text-gray-900;
+  @apply overflow-x-hidden lg:overflow-y-auto min-h-full lg:h-auto h-full text-lg text-gray-900;
 }
 
 .background {
-  @apply m-4 pb-8;
+  @apply m-4 pb-8 mt-8 lg:mt-4;
 }
 
 .wrapper {
@@ -51,15 +51,24 @@ a {
   @apply underline;
 }
 
+.m-nav {
+  @apply lg:hidden text-base absolute left-0 top-0 right-0 bg-white z-10;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.m-nav select {
+  @apply bg-transparent text-base border-r border-gray-300 w-40 p-2;
+}
+
 .nav {
   @apply list-none hidden lg:block xl:ml-8 xl:w-60 fixed left-0 top-0 bottom-0 w-36 my-6 overflow-y-auto;
 }
 
 .nav select {
-  @apply bg-transparent px-3 py-2 text-gray-900 border-b border-gray-900;
+  @apply bg-transparent px-3 py-2 border-b border-gray-900;
 }
 
-.nav select:focus {
+select:focus {
   @apply outline-none;
 }
 
