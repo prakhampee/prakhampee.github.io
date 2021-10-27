@@ -12,7 +12,7 @@ const AdmZip = require('adm-zip');
 wordcut.init('./dict/*.txt');
 
 const BOOKS = [
-  ['ยอห์น', '/', 15],
+  ['ยอห์น', '/', 17],
   ['วิวรณ์', '/rev/', 5],
 ];
 
