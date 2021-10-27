@@ -57,7 +57,15 @@ a {
 }
 
 .m-nav select {
-  @apply bg-transparent text-base border-r border-gray-300 w-40 p-2;
+  @apply bg-transparent text-base border-r border-gray-300 p-2;
+}
+
+.book {
+  @apply w-40;
+}
+
+.chapter {
+  @apply w-16;
 }
 
 .nav {

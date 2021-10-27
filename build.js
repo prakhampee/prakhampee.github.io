@@ -113,7 +113,7 @@ async function processBook(book, path, lastChapter) {
   });
   const $mobileNav = $('<div>').addClass('m-nav');
   const $ul = $('<ul>').addClass('nav');
-  const $books = $('<select>').addClass('navigation');
+  const $books = $('<select>').addClass('navigation').addClass('book');
   for (const [name, path, _] of BOOKS) {
     const $option = $('<option>').val(path).text(name);
     if (name === book) {
@@ -123,12 +123,15 @@ async function processBook(book, path, lastChapter) {
   }
   $mobileNav.append($books.clone());
   $ul.append($('<li>').html($books));
+  const $chapters = $('<select>').addClass('navigation').addClass('chapter');
   $('.title').each((_, $title) => {
     const title = $($title).text();
     const id = 'c' + title.replace(/[^0-9]*/g, '');
     $($title).attr('id', id);
     $ul.append($('<li>').append($('<a>').attr('href', `#${id}`).text(title)));
+    $chapters.append($('<option>').val(`#${id}`).text(id.slice(1)));
   });
+  $mobileNav.append($chapters);
   $('body').find('*').contents().filter(function() { return this.nodeType === 3; }).each(function() {
     const words = wordcut.cutIntoArray(this.data);
     let last = null;
