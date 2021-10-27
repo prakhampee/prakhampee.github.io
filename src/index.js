@@ -18,6 +18,9 @@
 // });
 // tryInitScroll();
 
+document.getElementById('navigation').addEventListener('change', e => {
+  location.href = e.target.value;
+});
 
 const $titles = document.getElementsByClassName('title');
 
@@ -41,4 +44,8 @@ function updateActive() {
     $link.classList.remove('active');
   }
   $links[activeIndex].classList.add('active');
+  const hash = $links[activeIndex].getAttribute('href');
+  if (location.hash !== hash) {
+    history.replaceState({}, '',  hash);
+  }
 }

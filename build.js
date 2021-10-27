@@ -111,10 +111,20 @@ async function processBook(book, path, lastChapter) {
     }
   });
   const $ul = $('<ul>').addClass('nav');
+  const $books = $('<select>').attr('id', 'navigation');
+  for (const [name, path, _] of BOOKS) {
+    const $option = $('<option>').val(path).text(name);
+    if (name === book) {
+      $option.attr('selected', '');
+    }
+    $books.append($option);
+  }
+  $ul.append($('<li>').html($books));
   $('.title').each((_, $title) => {
-    const id = $($title).text();
+    const title = $($title).text();
+    const id = 'c' + title.replace(/[^0-9]*/g, '');
     $($title).attr('id', id);
-    $ul.append($('<li>').append($('<a>').attr('href', `#${id}`).text(id)));
+    $ul.append($('<li>').append($('<a>').attr('href', `#${id}`).text(title)));
   });
   $('body').find('*').contents().filter(function() { return this.nodeType === 3; }).each(function() {
     const words = wordcut.cutIntoArray(this.data);
