@@ -52,7 +52,7 @@ a {
 }
 
 .nav {
-  @apply list-none hidden lg:block xl:ml-8 xl:w-60 fixed left-0 top-0 bottom-0 w-36 my-6;
+  @apply list-none hidden lg:block xl:ml-8 xl:w-60 fixed left-0 top-0 bottom-0 w-36 my-6 overflow-y-auto;
 }
 
 .nav a {

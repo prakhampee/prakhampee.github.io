@@ -1,5 +1,6 @@
 public/index.html
-public/manifest.appcache
+public/rev/
 src/content.html
 data/index.html
 data/style.css
+debug.sh

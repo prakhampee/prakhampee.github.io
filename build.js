@@ -7,10 +7,16 @@ const hashFiles = require('hash-files');
 const minify = require('html-minifier').minify;
 const wordcut = require('wordcut');
 const cheerio = require('cheerio');
+const AdmZip = require('adm-zip');
 
 wordcut.init('./dict/*.txt');
 
-const BOOKS = {
+const BOOKS = [
+  ['ยอห์น', '/', 15],
+  ['วิวรณ์', '/rev/', 5],
+];
+
+const BOOK_MAP = {
     "ปฐมกาล": "GEN",
     "อพยพ": "EXO",
     "เลวีนิติ": "LEV",
@@ -84,15 +90,19 @@ async function compileTailwind() {
   const plugins = tailwindConfig('./tailwind.config.js').plugins;
   plugins.push(...postcssConfig.plugins);
   const result = await compileCss({
-    inputFile: './data/style.css',
+    inputFile: './build/style.css',
     plugins,
   });
   return result.css;
 }
 
-async function getData() {
-  let content = fs.readFileSync('./data/content.html', 'utf8');
+async function processBook(book, path, lastChapter) {
+  const zip = new AdmZip(`./book/${book}.zip`);
+  let content = zip.readAsText('index.html');
   const $ = cheerio.load(content);
+  const $unwantedTitle = $(`.title:contains(${lastChapter + 1})`);
+  $unwantedTitle.nextAll().remove();
+  $unwantedTitle.remove();
   $('hr').remove();
   $('span').each((_, $span) => {
     $span = $($span);
@@ -112,10 +122,10 @@ async function getData() {
     for (let i = 0; i < words.length; ++i) {
       let word = words[i];
       let url = null;
-      let book = BOOKS[word];
+      let book = BOOK_MAP[word];
       if (book) {
-        const m = words.slice(i).join('').match(/^(?<book>(?:[12] )?[^ ]+) (?<chapter>\d+)(?::(?:(?<verse>\d+)(?:-(?<verse_end>\d+))?))?(?<word>;)?/);
-        if (m && BOOKS[m.groups.book]) {
+        const m = words.slice(i).join('').match(/^(?<book>(?:[12] )?[^ ]+) (?<chapter>\d+)(?::(?:(?<verse>\d+)(?:-(?<verse_end>\d+))?)|[^. ](?:[^*]|$)|$)(?<word>;)?/);
+        if (m && BOOK_MAP[m.groups.book]) {
           let n_skip = 3;
           url = `https://my.bible.com/bible/174/${book}.${m.groups.chapter}`;
           if (m.groups.verse) {
@@ -162,7 +172,16 @@ async function getData() {
   $('body').prepend($ul);
   const style = [];
   const css = $('style').html().replace(/\n/g, '');
-  for (const m of css.matchAll(/(.c[0-9]{1,2}) \{[^{]+margin-left: (\d+)/g)) {
+  for (const m of css.matchAll(/(.c[0-9]{1,2})\{[^{}]*vertical-align:super/g)) {
+    style.push(`${m[1]} { @apply align-top text-xs }`);
+  }
+  for (const m of css.matchAll(/(.c[0-9]{1,2})\{[^{}]*font-size:(\d+)/g)) {
+    const size = +m[2];
+    if (size === 9) {
+      style.push(`${m[1]} { @apply align-top text-sm }`);
+    }
+  }
+  for (const m of css.matchAll(/(.c[0-9]{1,2})\{[^{}]*margin-left:(\d+)/g)) {
     const margin = +m[2];
     if (margin >= 72) {
       style.push(`${m[1]} { @apply ml-16; }`);
@@ -170,22 +189,24 @@ async function getData() {
       style.push(`${m[1]} { @apply ml-8; }`);
     }
   }
-  for (const m of css.matchAll(/(.c[0-9]{1,2}) \{[^{]+[^-]color: #660000/g)) {
+  for (const m of css.matchAll(/(.c[0-9]{1,2})\{(?:[^{]+;)?color:#660000/g)) {
     style.push(`${m[1]} { @apply text-red; }`);
   }
-  for (const m of css.matchAll(/(.c[0-9]{1,2}) \{[^{]+[^-]height: (\d+)/g)) {
+  for (const m of css.matchAll(/(.c[0-9]{1,2})\{(?:[^{]+;)?height:(\d+)/g)) {
     style.push(`${m[1]} { @apply h-4; }`);
   }
   const cssContent = fs.readFileSync('./src/style.css', 'utf8') + style.join('\n');
-  fs.writeFileSync('./data/style.css', cssContent);
+  fs.writeFileSync('./build/style.css', cssContent);
   content = $('body').html();
-  const javascript = fs.readFileSync('./data/build.js', 'utf8');
+  const javascript = fs.readFileSync('./build/build.js', 'utf8');
+  fs.writeFileSync('./build/index.html', content);
   const data = {
     content,
     javascript,
     style: await compileTailwind(),
   };
-  return data;
+  fs.mkdirSync(`./public${path}`, { recursive: true });
+  compile('./src/index.html', `./public${path}index.html`, data);
 }
 
 function compile(source, destination, data) {
@@ -208,23 +229,16 @@ function compile(source, destination, data) {
 }
 
 async function main() {
+  fs.mkdirSync(`./build`, { recursive: true });
   require('esbuild').build({
     entryPoints: ['./src/index.js'],
     bundle: true,
     minify: true,
-    outfile: './data/build.js',
+    outfile: './build/build.js',
   }).catch(() => process.exit(1));
-  const data = await getData();
-  compile('./src/index.html', './public/index.html', data);
-  let files = fs.readdirSync('./public');
-  files = files.filter(filename => filename !== 'manifest.appcache' && filename !== 'impressum');
-  files.sort();
-  const hash = hashFiles.sync({
-    files: files.map(file => './public/' + file),
-    noGlob: true,
-  });
-  const manifest = `CACHE MANIFEST\n# ${hash}\n` + files.join('\n');
-  fs.writeFileSync('./public/manifest.appcache', manifest);
+  for (const [book, path, lastChapter] of BOOKS) {
+    await processBook(book, path, lastChapter);
+  }
   console.log(new Date());
 }
 
