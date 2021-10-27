@@ -61,6 +61,7 @@ function updateActive() {
       activeIndex = i;
     }
   }
+  document.getElementsByClassName('chapter')[0].selectedIndex = activeIndex;
   const $links = document.querySelectorAll('.nav a');
   for (const $link of $links) {
     $link.classList.remove('active');
