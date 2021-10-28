@@ -3,7 +3,6 @@ const postcssConfig = require('./postcss.config.js');
 const tailwindConfig = require('tailwindcss');
 const compileCss = require('tailwindcss/lib/cli/compile.js').default;
 const fs = require('fs');
-const hashFiles = require('hash-files');
 const minify = require('html-minifier').minify;
 const wordcut = require('wordcut');
 const cheerio = require('cheerio');
