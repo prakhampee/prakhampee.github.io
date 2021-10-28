@@ -140,7 +140,7 @@ async function processBook(book, path, lastChapter) {
       let url = null;
       let book = BOOK_MAP[word];
       if (book) {
-        const m = words.slice(i).join('').match(/^(?<book>(?:[12] )?[^ ]+) (?<chapter>\d+)(?::(?:(?<verse>\d+)(?:-(?<verse_end>\d+))?)|[^. ](?:[^*]|$)|$)(?<word>;)?/);
+        const m = words.slice(i).join('').match(/^(?<book>(?:[12] )?[^ ]+) (?<chapter>\d+)(?::(?:(?<verse>\d+)(?:-(?<verse_end>\d+))?)|[^\d. ](?:[^*]|$)|$)(?<word>;)?/);
         if (m && BOOK_MAP[m.groups.book]) {
           let n_skip = 3;
           url = `https://my.bible.com/bible/174/${book}.${m.groups.chapter}`;
