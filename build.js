@@ -151,7 +151,7 @@ async function processBook(book, path, lastChapter) {
             }
             n_skip += 1;
           }
-          if (m.groups.verse_end) {
+          if (m.groups.verse_end && +m.groups.verse_end > +m.groups.verse) {
             url += `-${m.groups.verse_end}`;
             n_skip += 2;
           }
