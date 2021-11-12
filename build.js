@@ -103,6 +103,7 @@ async function processBook(book, path, lastChapter) {
   const $unwantedTitle = $(`.title:contains(${lastChapter + 1})`);
   $unwantedTitle.nextAll().remove();
   $unwantedTitle.remove();
+  $('sup').remove();
   $('hr').remove();
   $('span').each((_, $span) => {
     $span = $($span);
