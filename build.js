@@ -12,7 +12,7 @@ wordcut.init('./dict/*.txt');
 
 const BOOKS = [
   ['ยอห์น', '/', 17],
-  ['วิวรณ์', '/rev/', 5],
+  ['วิวรณ์', '/rev/', 13],
 ];
 
 const BOOK_MAP = {
