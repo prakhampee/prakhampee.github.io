@@ -105,6 +105,7 @@ async function processBook(book, path, lastChapter) {
   $unwantedTitle.remove();
   $('sup').remove();
   $('hr').remove();
+  $('div').remove();
   $('span').each((_, $span) => {
     $span = $($span);
     if (!$span.attr('class')) {
